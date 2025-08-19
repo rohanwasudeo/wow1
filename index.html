@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bootstrap Todo List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card shadow">
+          <div class="card-body">
+            <h3 class="card-title mb-4 text-center">Todo List</h3>
+            <form id="todo-form" class="d-flex mb-3">
+              <input type="text" id="todo-input" class="form-control me-2" placeholder="Add a new task..." required>
+              <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+            <ul id="todo-list" class="list-group">
+              <!-- Todo items will appear here -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const form = document.getElementById('todo-form');
+    const input = document.getElementById('todo-input');
+    const list = document.getElementById('todo-list');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (text) {
+        addTodo(text);
+        input.value = '';
+      }
+    });
+
+    function addTodo(text) {
+      const li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center';
+      li.innerHTML = `
+        <span>${text}</span>
+        <div>
+          <button class="btn btn-sm btn-success me-2 complete-btn" title="Mark as done">
+            <span>&#10003;</span>
+          </button>
+          <button class="btn btn-sm btn-danger delete-btn" title="Delete">
+            <span>&#10005;</span>
+          </button>
+        </div>
+      `;
+      list.appendChild(li);
+    }
+
+    list.addEventListener('click', function(e) {
+      if (e.target.closest('.delete-btn')) {
+        e.target.closest('li').remove();
+      } else if (e.target.closest('.complete-btn')) {
+        const li = e.target.closest('li');
+        li.querySelector('span').classList.toggle('text-decoration-line-through');
+      }
+    });
+  </script>
+</body>
+</html>
